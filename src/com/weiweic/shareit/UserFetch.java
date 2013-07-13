@@ -76,14 +76,15 @@ public class UserFetch extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				JSONObject obj = new JSONObject();
 
-				obj.put("name", username);
-				obj.put("id", id);
+				obj.put("username", username);
+				obj.put("userid", id);
 				obj.put("gender", gender);
 				obj.put("password", password);
 				obj.put("facebookid", facebookid);
 				obj.put("linkedinid", linkedinid);
 				out.print(obj);
 				out.flush();
+				out.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -93,6 +93,7 @@ public class EventFetch extends HttpServlet {
 				obj.put("type", type);
 				out.print(obj);
 				out.flush();
+				out.close();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

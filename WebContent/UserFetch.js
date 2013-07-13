@@ -1,22 +1,11 @@
 var req;
 function validateForm(form) {
-	var username = document.forms["myForm"]["username"].value;
-	if (username == null || username == "") {
-		alert("Please enter a username.");
+	var userId = document.forms["myForm"]["userId"].value;
+	if (userId == null || userId == "") {
+		alert("Please enter a userId.");
 		return false;
 	}
-	if (!isNaN(username)) {
-		alert("Please enter a valid username.");
-		return false;
-	}
-
-	var password = document.forms["myForm"]["password"].value;
-	var facebookId = document.forms["myForm"]["facebookId"].value;
-	var linkedInId = document.forms["myForm"]["linkedInId"].value;
-	var gender = document.forms["myForm"]["gender"].value;
-	loadXMLDoc("http://10.16.23.17:8080/ShareIt/UserCreate?username="
-			+ username + "&facebookId=" + facebookId + "&linkedInId="
-			+ linkedInId + "&gender=" + gender + "&password=" + password);
+	loadXMLDoc("http://10.16.23.17:8080/ShareIt/UserFetch?userId=" + userId);
 
 }
 function loadXMLDoc(url) {
@@ -46,17 +35,28 @@ function processJSON() {
 		if (req.status == 200) {
 			var doc = JSON.parse(req.responseText);
 			var outputMsg = "";
-			if (doc.hotels.hotel.length == 0) {
+			if (doc.length == 0) {
 				document.getElementById("updateArea").innerHTML = "No Results Found";
 			} else {
-				// outputMsg += "<div id=fb-root></div>";
+				outputMsg += "<div id=fb-root></div>";
 				outputMsg += "<table class=output>";
-				outputMsg += "<th>Image</th><th>Name</th><th>Location</th><th>Rating out of 5</th><th>Reviews</th><th>Post to Facebook</th>";
+
+				outputMsg += "<th>Username</th><th>Gender</th><th>Password</th><th>Facebook</th>"
+						+ "<th>LinkedIn</th>";
+				outputMsg += "<tr class=output>";
+				outputMsg += "<td class=output>" + doc.username + "</td>";
+				outputMsg += "<td class=output>" + doc.gender + "</td>";
+				outputMsg += "<td class=output>" + doc.password + "</td>";
+				outputMsg += "<td class=output>" + doc.facebookid + "</td>";
+				outputMsg += "<td class=output>" + doc.linkedinid + "</td>";
+
+				outputMsg += "</tr>";
+
 				outputMsg += "</table>";
 				document.getElementById("updateArea").innerHTML = outputMsg;
 			}
 		} else {
-			document.getElementById("updateArea").innerHTML = "Failed";
+			document.getElementById("updateArea").innerHTML = "Sorry";
 		}
 	}
 
@@ -67,6 +67,7 @@ function processReqChange() {
 			var outMsg = req.responseXML;
 		} else {
 			var outMsg = "Failed";
+
 		}
 		document.getElementById("updateArea").innerHTML = outMsg;
 	}

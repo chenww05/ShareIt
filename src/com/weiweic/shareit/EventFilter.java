@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,10 +53,29 @@ public class EventFilter extends HttpServlet {
 		Double longtitude = Double.parseDouble(request
 				.getParameter("longitude"));
 		int numberOfPersons = Integer.parseInt(request.getParameter("number"));
-		double starttime = Double
-				.parseDouble(request.getParameter("startTime"));
-		double endtime = Double.parseDouble(request.getParameter("endTime"));
 
+
+		String start = request.getParameter("startTime");
+		String end = request.getParameter("endTime");
+		//start = "2007-10-10 12:12:12";
+		//end = "2007-10-10 13:13:13";
+		DateFormat formater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+		// java.sql.Date sqltDate= new java.sql.Date(parsedUtilDate.getTime());
+		//SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+
+		long starttime = 0;
+		long endtime = 0;
+		try {
+			starttime = formater.parse(start).getTime();  
+			endtime = formater.parse(end).getTime();
+			
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
 		response.setContentType("application/json");
 
 		try {
@@ -111,8 +133,9 @@ public class EventFilter extends HttpServlet {
 			JSONObject obj = new JSONObject();
 			obj.put("eventId", newList);
 
-			out.print(obj);
+			out.println(obj);
 			out.flush();
+			out.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
