@@ -59,7 +59,7 @@ public class EventFetch extends HttpServlet {
 				String sql = "SELECT * FROM event where eventid='" + id + "'";
 
 				ResultSet rs = connection.createStatement().executeQuery(sql);
-				String name = null, description=null, location=null;
+				String name = null, description=null, location=null, type=null;
 				double latitude = 0.0, longitude = 0.0, start= 0.0, end = 0.0,price =0.0;
 				int number =0;
 				while (rs.next()) {
@@ -72,6 +72,7 @@ public class EventFetch extends HttpServlet {
 					end = rs.getDouble("endtime");
 					price = rs.getDouble("price");
 					number=rs.getInt("number");
+					type=rs.getString("type");
 					System.out.println(name + "\t" + location + "\t" + description
 							+ "\t" + latitude + "\t" + longitude);
 					break;
@@ -89,6 +90,7 @@ public class EventFetch extends HttpServlet {
 				obj.put("endtime", end);
 				obj.put("price",price);
 				obj.put("number", number);
+				obj.put("type", type);
 				out.print(obj);
 				out.flush();
 			} catch (SQLException e) {

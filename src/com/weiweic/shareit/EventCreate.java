@@ -44,12 +44,13 @@ public class EventCreate extends HttpServlet {
 		String start = request.getParameter("starttime");
 		String end = request.getParameter("endtime");
 		int number  = Integer.parseInt(request.getParameter("number"));
-		start = "2007-10-10 12:12:12";
-		end = "2007-10-10 13:13:13";
+		String type = request.getParameter("type");
+		//start = "2007-10-10 12:12:12";
+		//end = "2007-10-10 13:13:13";
 		DateFormat formater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
 		// java.sql.Date sqltDate= new java.sql.Date(parsedUtilDate.getTime());
-		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
+		//SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH:MM:SS");
 
 		long starttime = 0;
 		long endtime = 0;
@@ -83,8 +84,8 @@ public class EventCreate extends HttpServlet {
 			connection = DriverManager.getConnection(
 					"jdbc:postgresql://localhost:5432/shareit", "postgres",
 					"root");
-			String sql = "INSERT INTO event (name,description,starttime,endtime,location,latitude, longitude, price,number) "
-					+ "VALUES (?,?,?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO event (name,description,starttime,endtime,location,latitude, longitude, price,number,type) "
+					+ "VALUES (?,?,?,?,?,?,?,?,?,?)";
 
 			PreparedStatement stmt = connection.prepareStatement(sql);
 
@@ -98,6 +99,7 @@ public class EventCreate extends HttpServlet {
 			stmt.setDouble(7, longitude);
 			stmt.setDouble(8, price);
 			stmt.setInt(9, number);
+			stmt.setString(10,type);
 			stmt.executeUpdate();
 
 		} catch (SQLException e) {
